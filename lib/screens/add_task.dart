@@ -1,6 +1,6 @@
 //change line 156
 import 'package:flutter/material.dart';
-import 'package:fyp/screens/home.dart';
+import 'package:fyp/bottom_navigation_screen.dart';
 class NewTaskPage extends StatefulWidget {
   @override
   _NewTaskPageState createState() => _NewTaskPageState();
@@ -15,7 +15,7 @@ class _NewTaskPageState extends State<NewTaskPage> {
     return Scaffold(
       //app bar is different becuase of subpage
       appBar: AppBar(
-        backgroundColor: Colors.pink.shade600, // Pink Header
+        backgroundColor: Colors.pink, // Pink Header
         title: Text(
           "New Task",
           style: TextStyle(
@@ -27,8 +27,11 @@ class _NewTaskPageState extends State<NewTaskPage> {
         elevation: 0,
         leading: IconButton(
           icon: Icon(Icons.arrow_back, color: Colors.white),
-          onPressed: () {},
+          onPressed: () {
+            Navigator.pop(context); // User ko previous screen pr wapas le jaane ke liye
+          },
         ),
+
       ),
       body: Container(
         //whole container contain all widgets
@@ -73,7 +76,7 @@ class _NewTaskPageState extends State<NewTaskPage> {
                   ),
                 ),
                 SizedBox(width: 10),
-                Icon(Icons.mic, color: Colors.pink.shade600),
+                Icon(Icons.mic, color: Colors.pink.shade800),
               ],
             ),
             SizedBox(height: 30),
@@ -118,27 +121,32 @@ class _NewTaskPageState extends State<NewTaskPage> {
               "Notifications",
               style: TextStyle(
                 fontSize: 14,
-                color: Colors.pink.shade600,
+                color: Colors.pink.shade800,
                 decoration: TextDecoration.underline,
               ),
             ),
             SizedBox(height: 5),
             Text(
               "No notifications if date not set.",
-              style: TextStyle(color: Colors.red,),
+              style: TextStyle(color: Colors.red.shade800,),
             ),
-            SizedBox(height: 30),
+            SizedBox(height: 20),
           ],
         ),
       ),
 
       // Floating Check Button
-      floatingActionButton: FloatingActionButton(
-        onPressed: () {print("Task Title: $taskTitle");
-          print("Selected Date: $selectedDate");
-        },
-        backgroundColor: Colors.pink.shade600,
-        child: Icon(Icons.check, color: Colors.white),
+      floatingActionButton: Padding(
+        padding: EdgeInsets.only(bottom: 30), // Adjust this value as needed
+        child: FloatingActionButton(
+          onPressed: () {
+            print("Task Title: $taskTitle");
+            print("Selected Date: $selectedDate");
+           Navigator.pop(context);
+          },
+          backgroundColor: Colors.pink.shade600,
+          child: Icon(Icons.check, color: Colors.white),
+        ),
       ),
     );
   }

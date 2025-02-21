@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:fyp/appbar.dart';
-
+import 'package:fyp/screens/add_task.dart';
 class TodoListPage extends StatefulWidget {
   @override
   _TodoListPageState createState() => _TodoListPageState();
@@ -37,7 +37,7 @@ class _TodoListPageState extends State<TodoListPage> {
                     return Container(
                       margin: EdgeInsets.only(bottom: 10),
                       decoration: BoxDecoration(
-                        color: Colors.pink.shade600,
+                        color: Colors.pink,
                         borderRadius: BorderRadius.circular(10),
                       ),
                       padding: EdgeInsets.symmetric(vertical: 10, horizontal: 15),
@@ -50,10 +50,10 @@ class _TodoListPageState extends State<TodoListPage> {
                                 tasks[index]["isChecked"] = value!;
                               });
                             },
-                            activeColor: Colors.transparent, // Transparent background for the checkbox
-                            checkColor: Colors.white, // White tick when checked
+                            fillColor: MaterialStateProperty.all(Colors.white), // White background
+                            checkColor: Colors.pink, // Pink tick when checked
+                            side: BorderSide.none, // Removes black border
                           ),
-
                           Text(
                             tasks[index]["title"],
                             style: TextStyle(color: Colors.white, fontSize: 20),
@@ -67,26 +67,32 @@ class _TodoListPageState extends State<TodoListPage> {
 
               // Quick Task Input Section
               Container(
-                color: Colors.pink.shade600,
                 padding: EdgeInsets.all(10),
                 child: Row(
                   children: [
-                    Icon(Icons.mic, color: Colors.white),
+                    Icon(Icons.mic, color: Colors.pink.shade600),
                     SizedBox(width: 10),
                     Expanded(
                       child: TextField(
                         decoration: InputDecoration(
                           hintText: "Enter Quick Task Here",
-                          hintStyle: TextStyle(color: Colors.white),
-                          border: InputBorder.none,
+                          hintStyle: TextStyle(color: Colors.pink),
+                          enabledBorder: UnderlineInputBorder(
+                            borderSide: BorderSide(color: Colors.pink), // Default pink underline
+                          ),
+                          focusedBorder: UnderlineInputBorder(
+                            borderSide: BorderSide(color: Colors.pink, width: 2), // Thicker pink underline when focused
+                          ),
                         ),
-                        style: TextStyle(color: Colors.white),
+                        style: TextStyle(color: Colors.black),
                       ),
                     ),
                     SizedBox(width: 10),
                   ],
                 ),
-              ),
+              )
+
+
             ],
           ),
 
@@ -97,7 +103,7 @@ class _TodoListPageState extends State<TodoListPage> {
             child: FloatingActionButton(
               onPressed: () {
                 // Action for adding a new task
-                // Navigator.pushReplacement(context, MaterialPageRoute(builder: (context)=>NewTaskPage()));
+                Navigator.push(context, MaterialPageRoute(builder: (context) => NewTaskPage()));
               },
               backgroundColor: Colors.pink,
               child: Icon(Icons.add, color: Colors.white),
