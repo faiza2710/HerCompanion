@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:fyp/appbar.dart';
-import 'package:fyp/bottom_navigation_screen.dart';
 import 'screens/splash.dart';
+import 'package:fyp/screens/home.dart';
 import 'package:firebase_core/firebase_core.dart';
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -26,7 +25,8 @@ class MyApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       home: Scaffold(
         //appBar : CustomAppBar(),
-        body: SplashScreen(),
+        // body: SplashScreen(),
+        body:TodoListPage(),
       ),
 
     );

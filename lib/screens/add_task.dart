@@ -1,103 +1,62 @@
 //change line 156
 import 'package:flutter/material.dart';
-import 'package:fyp/bottom_navigation_screen.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 class NewTaskPage extends StatefulWidget {
   @override
   _NewTaskPageState createState() => _NewTaskPageState();
 }
 
 class _NewTaskPageState extends State<NewTaskPage> {
+  final CollectionReference tasksCollection = FirebaseFirestore.instance.collection('Todo');
   String taskTitle = "";
   String selectedDate = "Date not set";
+
+  void _addTask() {
+    if (taskTitle.isNotEmpty) {
+      tasksCollection.add({
+        "title": taskTitle,
+        "isChecked": false,
+        "date": selectedDate,
+      }).then((value) => Navigator.pop(context));
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      //app bar is different becuase of subpage
       appBar: AppBar(
-        backgroundColor: Colors.pink, // Pink Header
-        title: Text(
-          "New Task",
-          style: TextStyle(
-            fontSize: 20,
-            fontWeight: FontWeight.bold,
-            color: Colors.white,
-          ),
-        ),
-        elevation: 0,
+        backgroundColor: Colors.pink,
+        title: Text("New Task", style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold, color: Colors.white)),
         leading: IconButton(
           icon: Icon(Icons.arrow_back, color: Colors.white),
-          onPressed: () {
-            Navigator.pop(context); // User ko previous screen pr wapas le jaane ke liye
-          },
+          onPressed: () => Navigator.pop(context),
         ),
-
       ),
-      body: Container(
-        //whole container contain all widgets
-        color: Colors.white, // Light pink background
+      body: Padding(
         padding: EdgeInsets.all(20),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            // Task Title Input
-            //written what will be text
-            Text(
-              "What is to be done?",
-              style: TextStyle(
-                fontSize: 16,
-                fontWeight: FontWeight.bold,
-                color: Colors.pink.shade800,
-              ),
-            ),
+            Text("What is to be done?", style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold, color: Colors.pink.shade800)),
             SizedBox(height: 10),
-            //Here user enters the text
-            Row(
-              children: [
-                Expanded(
-                  child: TextField(
-                    onChanged: (value) {
-                      setState(() {
-                        taskTitle = value;
-                      });
-                    },
-                    decoration: InputDecoration(
-                      hintText: "Enter Task Here",
-                      hintStyle: TextStyle(color: Colors.black),
-                      enabledBorder: UnderlineInputBorder(
-                        borderSide: BorderSide(color: Colors.pink.shade300),
-                      ),
-                      focusedBorder: UnderlineInputBorder(
-                        borderSide: BorderSide(color: Colors.pink),
-                      ),
-                    ),
-                    cursorColor: Colors.pink,
-                    style: TextStyle(color: Colors.pink.shade800),
-                  ),
-                ),
-                SizedBox(width: 10),
-                Icon(Icons.mic, color: Colors.pink.shade800),
-              ],
-            ),
-            SizedBox(height: 30),
-
-            // Due Date Section
-            Text(
-              "Due date",
-              style: TextStyle(
-                fontSize: 16,
-                fontWeight: FontWeight.bold,
-                color: Colors.pink.shade800,
+            TextField(
+              onChanged: (value) => setState(() => taskTitle = value),
+              decoration: InputDecoration(
+                hintText: "Enter Task Here",
+                enabledBorder: UnderlineInputBorder(borderSide: BorderSide(color: Colors.pink.shade300)),
+                focusedBorder: UnderlineInputBorder(borderSide: BorderSide(color: Colors.pink)),
               ),
+              cursorColor: Colors.pink,
+              style: TextStyle(color: Colors.pink.shade800),
             ),
+
+            SizedBox(height: 30),
+            Text("Due date", style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold, color: Colors.pink.shade800)),
             SizedBox(height: 10),
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                Text(
-                  selectedDate,
-                  style: TextStyle(color: Colors.black, fontSize: 16),
-                ),
+                Text(selectedDate, style: TextStyle(color: Colors.black, fontSize: 16)),
                 IconButton(
                   icon: Icon(Icons.calendar_today, color: Colors.pink.shade600),
                   onPressed: () async {
@@ -108,9 +67,7 @@ class _NewTaskPageState extends State<NewTaskPage> {
                       lastDate: DateTime(2100),
                     );
                     if (pickedDate != null) {
-                      setState(() {
-                        selectedDate = "${pickedDate.toLocal()}".split(' ')[0];
-                      });
+                      setState(() => selectedDate = "${pickedDate.toLocal()}".split(' ')[0]);
                     }
                   },
                 ),
@@ -127,27 +84,19 @@ class _NewTaskPageState extends State<NewTaskPage> {
             ),
             SizedBox(height: 5),
             Text(
-              "No notifications if date not set.",
-              style: TextStyle(color: Colors.red.shade800,),
+              "You will not get any notification if date is not set",
+              style: TextStyle(color: Colors.red.shade800,fontWeight: FontWeight.bold),
             ),
             SizedBox(height: 20),
           ],
         ),
       ),
-
-      // Floating Check Button
-      floatingActionButton: Padding(
-        padding: EdgeInsets.only(bottom: 30), // Adjust this value as needed
-        child: FloatingActionButton(
-          onPressed: () {
-            print("Task Title: $taskTitle");
-            print("Selected Date: $selectedDate");
-           Navigator.pop(context);
-          },
-          backgroundColor: Colors.pink.shade600,
-          child: Icon(Icons.check, color: Colors.white),
-        ),
+      floatingActionButton: FloatingActionButton(
+        onPressed: _addTask,
+        backgroundColor: Colors.pink.shade600,
+        child: Icon(Icons.check, color: Colors.white),
       ),
     );
   }
 }
+
