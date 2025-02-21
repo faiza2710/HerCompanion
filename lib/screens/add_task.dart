@@ -1,6 +1,6 @@
-//change line 156
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+
 class NewTaskPage extends StatefulWidget {
   @override
   _NewTaskPageState createState() => _NewTaskPageState();
@@ -10,6 +10,7 @@ class _NewTaskPageState extends State<NewTaskPage> {
   final CollectionReference tasksCollection = FirebaseFirestore.instance.collection('Todo');
   String taskTitle = "";
   String selectedDate = "Date not set";
+  String selectedTime = "Time not set";
 
   void _addTask() {
     if (taskTitle.isNotEmpty) {
@@ -17,6 +18,7 @@ class _NewTaskPageState extends State<NewTaskPage> {
         "title": taskTitle,
         "isChecked": false,
         "date": selectedDate,
+        "time": selectedTime,
       }).then((value) => Navigator.pop(context));
     }
   }
@@ -51,7 +53,7 @@ class _NewTaskPageState extends State<NewTaskPage> {
             ),
 
             SizedBox(height: 30),
-            Text("Due date", style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold, color: Colors.pink.shade800)),
+            Text("Due date??", style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold, color: Colors.pink.shade800)),
             SizedBox(height: 10),
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -73,6 +75,33 @@ class _NewTaskPageState extends State<NewTaskPage> {
                 ),
               ],
             ),
+            SizedBox(height: 30),
+            Text("Due Time??", style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold, color: Colors.pink.shade800)),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Text(selectedTime, style: TextStyle(color: Colors.black, fontSize: 16)),
+                IconButton(
+                  icon: Icon(Icons.access_time, color: Colors.pink.shade600),
+                  onPressed: () async {
+                    TimeOfDay? pickedTime = await showTimePicker(
+                      context: context,
+                      initialTime: TimeOfDay.now(),
+                      builder: (context, child) {
+                        return MediaQuery(
+                          data: MediaQuery.of(context).copyWith(alwaysUse24HourFormat: true),
+                          child: child!,
+                        );
+                      },
+                    );
+                    if (pickedTime != null) {
+                      setState(() => selectedTime = "${pickedTime.hour}:${pickedTime.minute}");
+                    }
+                  },
+                ),
+              ],
+            ),
+
             SizedBox(height: 10),
             Text(
               "Notifications",
@@ -99,4 +128,3 @@ class _NewTaskPageState extends State<NewTaskPage> {
     );
   }
 }
-
