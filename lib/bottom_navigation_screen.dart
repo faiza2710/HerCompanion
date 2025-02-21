@@ -1,12 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:fyp/CameraGallery.dart';
-import 'package:fyp/ConfettiPage.dart';
 import 'package:fyp/Services.dart';
-import 'package:fyp/User_profile.dart';
-import 'package:fyp/appbar.dart';
 import 'package:fyp/education/NewHomePage.dart';
-import 'package:fyp/education/explore_screen.dart';
-import 'package:fyp/profile.dart';
 import 'package:fyp/sample.dart';
 import 'package:image_picker/image_picker.dart';
 import 'screens/home.dart';

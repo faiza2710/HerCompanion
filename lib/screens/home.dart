@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:fyp/appbar.dart';
 
-
 class TodoListPage extends StatefulWidget {
   @override
   _TodoListPageState createState() => _TodoListPageState();
@@ -38,47 +37,26 @@ class _TodoListPageState extends State<TodoListPage> {
                     return Container(
                       margin: EdgeInsets.only(bottom: 10),
                       decoration: BoxDecoration(
-                        color: Colors.pink.withOpacity(0.9),
+                        color: Colors.pink.shade600,
                         borderRadius: BorderRadius.circular(10),
                       ),
                       padding: EdgeInsets.symmetric(vertical: 10, horizontal: 15),
                       child: Row(
                         children: [
-                          // Square Bullet for Task
-                          Container(
-                            width: 20,
-                            height: 20,
-                            decoration: BoxDecoration(
-                              color: Colors.white,
-                              borderRadius: BorderRadius.circular(4),
-                            ),
-                            child: Center(
-                              child: Container(
-                                width: 12,
-                                height: 12,
-                                decoration: BoxDecoration(
-                                  color: tasks[index]["isChecked"] ? Colors.green : Colors.transparent,
-                                  borderRadius: BorderRadius.circular(4),
-                                ),
-                              ),
-                            ),
-                          ),
-                          SizedBox(width: 10),
-
-                          // Task Title
-                          Expanded(
-                            child: Text(
-                              tasks[index]["title"],
-                              style: TextStyle(color: Colors.white, fontSize: 20),
-                            ),
-                          ),
-
-                          // Delete Icon
-                          IconButton(
-                            icon: Icon(Icons.delete, color: Colors.white),
-                            onPressed: () {
-                              _deleteTask(index); // Delete the task when pressed
+                          Checkbox(
+                            value: tasks[index]["isChecked"],
+                            onChanged: (bool? value) {
+                              setState(() {
+                                tasks[index]["isChecked"] = value!;
+                              });
                             },
+                            activeColor: Colors.transparent, // Transparent background for the checkbox
+                            checkColor: Colors.white, // White tick when checked
+                          ),
+
+                          Text(
+                            tasks[index]["title"],
+                            style: TextStyle(color: Colors.white, fontSize: 20),
                           ),
                         ],
                       ),
@@ -86,15 +64,40 @@ class _TodoListPageState extends State<TodoListPage> {
                   },
                 ),
               ),
+
+              // Quick Task Input Section
+              Container(
+                color: Colors.pink.shade600,
+                padding: EdgeInsets.all(10),
+                child: Row(
+                  children: [
+                    Icon(Icons.mic, color: Colors.white),
+                    SizedBox(width: 10),
+                    Expanded(
+                      child: TextField(
+                        decoration: InputDecoration(
+                          hintText: "Enter Quick Task Here",
+                          hintStyle: TextStyle(color: Colors.white),
+                          border: InputBorder.none,
+                        ),
+                        style: TextStyle(color: Colors.white),
+                      ),
+                    ),
+                    SizedBox(width: 10),
+                  ],
+                ),
+              ),
             ],
           ),
 
           // Floating Action Button Positioned
           Positioned(
-            bottom: 40,
-            right: 20,
+            bottom: 70,
+            right: 10,
             child: FloatingActionButton(
               onPressed: () {
+                // Action for adding a new task
+                // Navigator.pushReplacement(context, MaterialPageRoute(builder: (context)=>NewTaskPage()));
               },
               backgroundColor: Colors.pink,
               child: Icon(Icons.add, color: Colors.white),
