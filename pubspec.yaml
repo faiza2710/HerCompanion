@@ -58,6 +58,8 @@ dependencies:
   cloud_firestore: ^5.6.4
   flutter_local_notifications: ^18.0.1
   timezone: ^0.10.0
+  flutter_datetime_picker: ^1.5.1
+#  flutter_native_timezone: ^2.0.0
 #  flutter_sms_inbox: ^1.0.3
 
 dev_dependencies:
