@@ -1,10 +1,8 @@
 //line no.131 to change
 import 'package:flutter/material.dart';
-import 'package:fyp/bottom_navigation_screen.dart';
+import 'package:fyp/GenderChecker.dart';
 import 'package:fyp/components/onboarding_items.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
-import 'package:fyp/screens/home.dart';
-import 'package:fyp/LoginPage.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 class OnboardingView extends StatefulWidget {
   const OnboardingView({super.key});
@@ -131,7 +129,7 @@ class _OnboardingViewState extends State<OnboardingView> {
             //After we press get started button this onboarding value become true
             // same key
             if(!mounted)return;
-            Navigator.pushReplacement(context, MaterialPageRoute(builder: (context)=>Login()));
+            Navigator.pushReplacement(context, MaterialPageRoute(builder: (context)=>VoiceRecorderApp()));
           },
           child: const Text("Get Started",style: TextStyle(color: Colors.white,fontSize: 20,fontWeight: FontWeight.bold),)),
     );

@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:fyp/Services.dart';
+import 'package:fyp/services/Services.dart';
 import 'package:fyp/education/NewHomePage.dart';
 import 'package:fyp/sample.dart';
 import 'package:image_picker/image_picker.dart';
-import 'screens/home.dart';
+import 'todo_screens/home.dart';
 import 'emergency_screens/EmergencyPage.dart';
 
 class BottomNavigationScreen extends StatefulWidget {

@@ -3,8 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:another_flutter_splash_screen/another_flutter_splash_screen.dart';
 import 'package:fyp/bottom_navigation_screen.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:fyp/screens/onboarding.dart';
-import 'package:fyp/screens/home.dart';
+import 'package:fyp/todo_screens/onboarding.dart';
 
 class SplashScreen extends StatefulWidget {
   @override

@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
-import 'package:fyp/screens/splash.dart';
+import 'package:fyp/todo_screens/splash.dart';
+import 'package:fyp/services/Services.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:timezone/data/latest_all.dart' as tz;
-import 'package:timezone/timezone.dart' as tz;
 import 'package:permission_handler/permission_handler.dart';
 
 Future<void> requestNotificationPermissions() async {
@@ -50,30 +50,9 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       home: Scaffold(
-        body: SplashScreen(), // Change to NewTaskPage
+        body: HomeServicesPage(),
+        // body: SplashScreen(), // Change to NewTaskPage
       ),
     );
   }
 }
-// import 'package:flutter/material.dart';
-// import 'package:fyp/components/notice.dart';
-// void main() {
-//   WidgetsFlutterBinding.ensureInitialized();
-//   NotificationHelper.init();
-//   runApp(MyApp());
-// }
-//
-// class MyApp extends StatelessWidget {
-//   @override
-//   Widget build(BuildContext context) {
-//     return MaterialApp(
-//       home:ElevatedButton(onPressed: (){NotificationHelper.ScheduleNotification('Scheduled', 'Happy birthday');}, child: Text('Press')),
-//     );
-//     // return MaterialApp(
-//     //   debugShowCheckedModeBanner: false,
-//     //   title: 'Voice Recorder',
-//     //   theme: ThemeData(primarySwatch: Colors.blue),
-//     //   home: VoiceRecorderApp(),
-//     // );
-//   }
-// }
