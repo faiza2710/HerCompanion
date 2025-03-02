@@ -1,6 +1,7 @@
 import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:fyp/learning/player.dart';
 
 class LearningScreen extends StatefulWidget {
   const LearningScreen({super.key});
@@ -19,16 +20,25 @@ final List<String> categories = [
   'Children Upbringing',
   'Pregnancy Care'
 ];
-
+final List<String> playlists = [
+  'PLbVdwtmx18suuF0meUSymnXvbc6yCtoQd&si=HjcajDpehIrCFeYg',
+  'PLY14Itt9uf7tfMoG3Bw3f2nqKSJsAaAoP&si=4XGSG9dQRiSd1vCU',
+  'PLkCV754f4ESVUs-PnGD8re8ukJAPOlcY-&si=003kYRjS6c6gAEEJ',
+  'PLVdDKYcXHtGRFliCvM7MgGmOyfmAf4Pq0&si=VkqZlPg79SUFVy_8',
+  'PLVdDKYcXHtGRYdGv5xsd0VZ71jZv9Sf3f&si=_YwkGtGZMPTQkqLE',
+  'PLS-zsHAq4lsB95gfazal0UWaw5YoYk2xv&si=ZXpeVfjbHPJYrxC3',
+  'PLsOTMkSSmsZN5FFyfVYOeOQ7R-NoROeVj&si=4yFJk2vgDiGo5uGQ',
+  'PL1w5Qizk-osNCq-qJBAHjfb8s1SdVkx1N&si=A9yCJc7ywHebzOzL'
+];
 final List<String> imageList = [
-  'https://img.freepik.com/free-photo/front-view-woman-with-sport-concept_23-2148499266.jpg?w=740',
-  'https://img.freepik.com/free-photo/beautiful-young-woman-cooking-using-digital-tablet-kitchen_1301-7686.jpg?t=st=1739209650~exp=1739213250~hmac=32c9b8fcb57707b6ee3d26f7486d3a9930e1d29729025aa4d44ec64082646029&w=996',
-  'https://img.freepik.com/free-photo/confuse-clueless-cute-girl-shrugging-looking-complicated_176420-30990.jpg?t=st=1739209595~exp=1739213195~hmac=ee260c958a73e9ac13437e80ffdfcd3722976322d188e64b60c4e2b0b9489188&w=996',
-  'https://www.shutterstock.com/image-photo/beautiful-smiling-woman-long-wavy-600nw-1831638373.jpg',
-  'https://img.freepik.com/premium-photo/skills-development-internet-technology-business_220873-3999.jpg',
-  'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSgFnPqREWXtZv2ALKUCdIE8xE2ClR7ZmLROA&s',
-  'https://www.shutterstock.com/image-photo/happy-loving-family-mother-her-600nw-557866771.jpg',
-  'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS_s287tBbIn2OSjkbvVy5Y4Js00GzbqdN4NQ&s',
+  'assets/images/learning/self.jpg',
+  'assets/images/learning/cook.jpeg',
+  'assets/images/learning/solving.jpeg',
+  'assets/images/learning/beauty.jpg',
+  'assets/images/learning/skill.jpeg',
+  'assets/images/learning/mental.jpeg',
+  'assets/images/learning/child.webp',
+  'assets/images/learning/pregenancy.jpeg',
 ];
 
 class _LearningScreenState extends State<LearningScreen> {
@@ -95,15 +105,23 @@ class _LearningScreenState extends State<LearningScreen> {
                 itemBuilder: (context, index) {
                   return GestureDetector(
                     onTap: () {
-                      // Handle category tap
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => YouTubeVideos(
+                            playlistId: playlists[index], // Pass correct playlist ID
+                            appBarTitle: categories[index], // Pass category name as title
+                          ),
+                        ),
+                      );
                     },
                     child: ClipRRect(
                       borderRadius: BorderRadius.circular(12),
                       child: Stack(
                         children: [
                           // Background Image
-                          CachedNetworkImage(
-                            imageUrl: imageList[index],
+                          Image.asset(
+                            imageList[index],
                             fit: BoxFit.cover,
                             width: double.infinity,
                             height: double.infinity,
@@ -128,7 +146,7 @@ class _LearningScreenState extends State<LearningScreen> {
                                   alignment: Alignment.topRight,
                                   child: CircleAvatar(
                                     backgroundColor: Colors.white,
-                                    backgroundImage: CachedNetworkImageProvider(imageList[index]),
+                                    backgroundImage: AssetImage(imageList[index]),
                                     radius: 17,
                                   ),
                                 ),
@@ -154,8 +172,17 @@ class _LearningScreenState extends State<LearningScreen> {
                                   child: IconButton(
                                     icon: Icon(Icons.play_arrow, color: Colors.white, size: 28),
                                     onPressed: () {
-                                      // Handle Play button action
+                                      Navigator.push(
+                                        context,
+                                        MaterialPageRoute(
+                                          builder: (context) => YouTubeVideos(
+                                            playlistId: playlists[index], // Pass correct playlist ID
+                                            appBarTitle: categories[index], // Pass category name as title
+                                          ),
+                                        ),
+                                      );
                                     },
+
                                   ),
                                 ),
                               ],

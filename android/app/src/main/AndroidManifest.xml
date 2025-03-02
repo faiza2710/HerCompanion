@@ -16,6 +16,8 @@
 
 
 
+
+
     <!-- Queries must be outside the <application> tag -->
     <queries>
         <package android:name="com.android.mms" />

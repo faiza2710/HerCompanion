@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:fyp/Learning%20Screens/main%20page%20learning.dart';
+import 'package:fyp/learning/main%20page%20learning.dart';
 import 'package:fyp/education/explore_screen.dart';
 import 'package:fyp/screens--eesha/job.dart';
 
@@ -67,18 +67,20 @@ class _HomePageState extends State<HomePage> with SingleTickerProviderStateMixin
             color: Colors.black
           ),
           tabs: [
+            Tab(text: 'Learning'),
             Tab(text: 'Explore'),
             Tab(text: 'Jobs'),
-            Tab(text: 'Learning'),
+
           ],
         ),
       ),
       body: TabBarView(
         controller: _tabController,
         children: [
+          LearningScreen(),
           ExploreScreen(),
           JobsPage(),
-          LearningScreen(),
+
         ],
       ),
     );
