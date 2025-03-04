@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 import 'package:youtube_player_flutter/youtube_player_flutter.dart';
-
+import 'package:flutter/services.dart';
 class YouTubeVideos extends StatefulWidget {
   final String playlistId;
   final String appBarTitle;
@@ -109,7 +109,12 @@ class _YouTubeVideosState extends State<YouTubeVideos> {
                     Navigator.push(
                       context,
                       MaterialPageRoute(
-                        builder: (context) => YouTubePlayerScreen(videoId: video["id"] ?? ""),
+                        builder: (context) => YouTubePlayerScreen(
+                          videoId: video["id"] ?? "",
+                          title: video["title"] ?? "",
+                          description: video["description"] ?? "",
+                          publishedAt: video["publishedAt"] ?? "",
+                        ),
                       ),
                     );
                   },
@@ -132,7 +137,12 @@ class _YouTubeVideosState extends State<YouTubeVideos> {
                       Navigator.push(
                         context,
                         MaterialPageRoute(
-                          builder: (context) => YouTubePlayerScreen(videoId: video["id"] ?? ""),
+                          builder: (context) => YouTubePlayerScreen(
+                            videoId: video["id"] ?? "",
+                            title: video["title"] ?? "",
+                            description: video["description"] ?? "",
+                            publishedAt: video["publishedAt"] ?? "",
+                          ),
                         ),
                       );
                     },
@@ -157,30 +167,104 @@ class _YouTubeVideosState extends State<YouTubeVideos> {
 
 class YouTubePlayerScreen extends StatefulWidget {
   final String videoId;
-  YouTubePlayerScreen({required this.videoId});
+  final String title;
+  final String description;
+  final String publishedAt;
+
+  YouTubePlayerScreen({
+    required this.videoId,
+    required this.title,
+    required this.description,
+    required this.publishedAt,
+  });
 
   @override
   _YouTubePlayerScreenState createState() => _YouTubePlayerScreenState();
 }
 
 class _YouTubePlayerScreenState extends State<YouTubePlayerScreen> {
-  late YoutubePlayerController _controller;
+  late YoutubePlayerController controller;
 
   @override
   void initState() {
     super.initState();
-    _controller = YoutubePlayerController(
+    controller = YoutubePlayerController(
       initialVideoId: widget.videoId,
       flags: YoutubePlayerFlags(autoPlay: true, mute: false),
     );
+
+    // Lock the orientation to landscape
+    SystemChrome.setPreferredOrientations([
+      DeviceOrientation.landscapeRight,
+      DeviceOrientation.landscapeLeft,
+    ]);
+
+    // Show the system UI
+    SystemChrome.setEnabledSystemUIMode(SystemUiMode.edgeToEdge);
+  }
+
+  @override
+  void dispose() {
+    controller.dispose();
+    // Unlock the orientation when leaving the video player
+    SystemChrome.setPreferredOrientations([
+      DeviceOrientation.portraitUp,
+      DeviceOrientation.portraitDown,
+    ]);
+    super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: Center(
-        child: YoutubePlayer(controller: _controller),
+    return YoutubePlayerBuilder(
+      player: YoutubePlayer(
+        controller: controller,
+        showVideoProgressIndicator: true,
       ),
+      builder: (context, player) {
+        return Scaffold(
+          appBar: AppBar(
+            title: Text(widget.title, style: TextStyle(color: Colors.white)),
+            backgroundColor: Colors.pink,
+            leading: IconButton(
+              icon: Icon(Icons.arrow_back, color: Colors.white),
+              onPressed: () {
+                // Pop the screen and reset the system UI mode
+                Navigator.pop(context);
+                SystemChrome.setEnabledSystemUIMode(SystemUiMode.edgeToEdge);
+              },
+            ),
+          ),
+          body: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              player,
+              Padding(
+                padding: const EdgeInsets.all(10),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      widget.title,
+                      style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                    ),
+                    SizedBox(height: 8),
+                    Text(
+                      "Published on: ${widget.publishedAt}",
+                      style: TextStyle(fontSize: 14, color: Colors.grey),
+                    ),
+                    SizedBox(height: 8),
+                    Text(
+                      widget.description,
+                      style: TextStyle(fontSize: 14),
+                    ),
+                  ],
+                ),
+              ),
+            ],
+          ),
+        );
+      },
     );
   }
 }

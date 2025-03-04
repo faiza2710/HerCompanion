@@ -49,8 +49,8 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       home: Scaffold(
-        body: BottomNavigationScreen(),
-        // body: SplashScreen(), // Change to NewTaskPage
+        // body: BottomNavigationScreen(),
+        body: SplashScreen(), // Change to NewTaskPage
       ),
     );
   }
