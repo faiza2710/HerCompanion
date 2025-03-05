@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class ServiceProfilePage extends StatefulWidget {
   final String serviceName;
@@ -17,6 +18,24 @@ class ServiceProfilePage extends StatefulWidget {
 }
 
 class _ServiceProfilePageState extends State<ServiceProfilePage> {
+  Future<void> _makeCall() async {
+    String phoneNumber = widget.serviceContact.replaceAll(' ', ''); // Remove spaces
+
+    if (phoneNumber.startsWith('0')) {
+      phoneNumber = '+92${phoneNumber.substring(1)}'; // Replace leading 0 with +92
+    }
+
+    final Uri dialNumber = Uri.parse("tel:$phoneNumber");
+
+    if (await canLaunchUrl(dialNumber)) {
+      await launchUrl(dialNumber);
+    } else {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('Could not launch dialer. Make sure your device supports calling.')),
+      );
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -49,11 +68,8 @@ class _ServiceProfilePageState extends State<ServiceProfilePage> {
               textAlign: TextAlign.justify,
             ),
             SizedBox(height: 20),
-            SizedBox(height: 20),
             ElevatedButton(
-              onPressed: () {
-                // Booking logic
-              },
+              onPressed: _makeCall,
               style: ElevatedButton.styleFrom(
                 backgroundColor: Colors.pink,
               ),
