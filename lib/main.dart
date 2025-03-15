@@ -1,11 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
-import 'package:fyp/services/phone_call.dart';
 import 'package:fyp/todo_screens/splash.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:timezone/data/latest_all.dart' as tz;
 import 'package:permission_handler/permission_handler.dart';
 import 'package:fyp/bottom_navigation_screen.dart';
+
+import 'Auth/SignUp.dart';
+import 'job/jobs_page.dart';
 Future<void> requestNotificationPermissions() async {
   var status = await Permission.notification.status;
 
@@ -50,8 +52,10 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       home: Scaffold(
+        // body: JobListScreen(),
+        body: SignUpPage(),
         // body:phone_call()
-        body: BottomNavigationScreen(),
+        // body: BottomNavigationScreen(),
         // body: SplashScreen(), // Change to NewTaskPage
       ),
     );

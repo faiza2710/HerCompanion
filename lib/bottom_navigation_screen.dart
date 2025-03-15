@@ -3,6 +3,7 @@ import 'package:fyp/services/Services.dart';
 import 'package:fyp/education/NewHomePage.dart';
 import 'package:fyp/sample.dart';
 import 'package:image_picker/image_picker.dart';
+import 'User_profile.dart';
 import 'todo_screens/home.dart';
 import 'emergency_screens/EmergencyPage.dart';
 
@@ -19,8 +20,8 @@ class _BottomNavigationScreenState extends State<BottomNavigationScreen> {
     TodoListPage(),
     Sample(),
     HomeServicesPage(),
-    EmergencyPage(),
-    // UserProfilePage(),
+    // EmergencyPage(),
+    UserProfilePage(),
   ];
 
   void _onItemTapped(int index) {

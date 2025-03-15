@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:fyp/learning/main%20page%20learning.dart';
 import 'package:fyp/education/explore_screen.dart';
-import 'package:fyp/screens--eesha/job.dart';
+import 'package:fyp/job/jobs_page.dart';
 
 class HomePage extends StatefulWidget {
   @override
@@ -79,7 +79,7 @@ class _HomePageState extends State<HomePage> with SingleTickerProviderStateMixin
         children: [
           LearningScreen(),
           ExploreScreen(),
-          JobsPage(),
+          JobListScreen(),
 
         ],
       ),

@@ -1,7 +1,7 @@
 import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:flutter_sound/flutter_sound.dart';
-import 'package:fyp/LoginPage.dart';
+import 'package:fyp/Auth/LoginPage.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:audioplayers/audioplayers.dart';
 import 'dart:io';
@@ -186,7 +186,7 @@ class _VoiceRecorderAppState extends State<VoiceRecorderApp> {
                       onTap: () {
                         Navigator.pushReplacement(
                           context,
-                          MaterialPageRoute(builder: (context) => Login()),
+                          MaterialPageRoute(builder: (context) => LoginPage()),
                         );
                       },
                       child: CircleAvatar(

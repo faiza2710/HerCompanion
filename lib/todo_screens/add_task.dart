@@ -3,6 +3,10 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:fyp/components/notice.dart';
 import 'dart:math';
+import 'package:firebase_auth/firebase_auth.dart';
+
+User? currentUser = FirebaseAuth.instance.currentUser;
+String? userId = currentUser?.uid; // Logged-in user's UID
 
 class NewTaskPage extends StatefulWidget {
   @override
@@ -17,11 +21,17 @@ class _NewTaskPageState extends State<NewTaskPage> {
   String selectedTime = "Time not set";
   // && selectedDate != "Date not set" && selectedTime != "Time not set"
   void _addTask() {
-    if (taskTitle.isNotEmpty && taskmesg.isNotEmpty) {
+    User? currentUser = FirebaseAuth.instance.currentUser;
+    if (currentUser == null) {
+      print("No user logged in");
+      return;
+    }
+      if (taskTitle.isNotEmpty && taskmesg.isNotEmpty) {
       tasksCollection.add({
         "title": taskTitle,
         "message":taskmesg,
         "isChecked": false,
+        "userId": currentUser.uid,  // Add logged-in user's UID
         // "date": selectedDate,
         // "time": selectedTime,
       }).then((value) => Navigator.pop(context));

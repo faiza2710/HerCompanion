@@ -5,6 +5,8 @@ import 'package:fyp/services/detail_page.dart';
 import 'package:fyp/services/posting_service.dart';
 import 'package:fyp/services/services_firebase.dart';
 
+import 'delete_service.dart';
+
 class HomeServicesPage extends StatefulWidget {
   @override
   _HomeServicesPageState createState() => _HomeServicesPageState();
@@ -116,23 +118,45 @@ class _HomeServicesPageState extends State<HomeServicesPage> {
           ),
         ],
       ),
-      floatingActionButton: FloatingActionButton.extended(
-        backgroundColor: Colors.pink,
-        onPressed: () {
-          Navigator.push(
-            context,
-            MaterialPageRoute(
-              builder: (context) => PostingService(),
+      floatingActionButton: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceEvenly, // Evenly distribute buttons
+        children: [
+          FloatingActionButton.extended(
+            backgroundColor: Colors.pink,
+            onPressed: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => PostingService(),
+                ),
+              );
+            },
+            label: Text(
+              'Post a Service',
+              style: TextStyle(color: Colors.white),
             ),
-          );
-        },
-        label: Text(
-          'Post a Service',
-          style: TextStyle(color: Colors.white),
-        ),
-        icon: Icon(Icons.add, color: Colors.white),
+            icon: Icon(Icons.add, color: Colors.white),
+          ),
+          FloatingActionButton.extended(
+            backgroundColor: Colors.pink, // Second button with different color
+            onPressed: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => DeleteService(),
+                ),
+              );
+            },
+            label: Text(
+              'Delete Service',
+              style: TextStyle(color: Colors.white),
+            ),
+            icon: Icon(Icons.delete, color: Colors.white),
+          ),
+        ],
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
+
     );
   }
 }

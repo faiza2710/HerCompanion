@@ -2,6 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:fyp/appbar.dart';
 import 'package:fyp/todo_screens/add_task.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+
+User? currentUser = FirebaseAuth.instance.currentUser;
+String? userId = currentUser?.uid; // Logged-in user's UID
 
 class TodoListPage extends StatefulWidget {
   @override
@@ -25,7 +29,7 @@ class _TodoListPageState extends State<TodoListPage> {
       backgroundColor: Colors.white,
       appBar: CustomAppBar(),
       body: StreamBuilder(
-        stream: tasksCollection.snapshots(),
+        stream: tasksCollection.where("userId", isEqualTo: FirebaseAuth.instance.currentUser?.uid).snapshots(),
         builder: (context, AsyncSnapshot<QuerySnapshot> snapshot) {
           if (!snapshot.hasData) {
             return Center(child: Text("No tasks available"));
@@ -48,19 +52,11 @@ class _TodoListPageState extends State<TodoListPage> {
                 child: Row(
                   children: [
                     Checkbox(
-                      value: (task.data() as Map<String, dynamic>).containsKey("isChecked")
-                          ? task["isChecked"]
-                          : false,
-                      onChanged: (value) => _toggleTaskCompletion(
-                          task.id,
-                          (task.data() as Map<String, dynamic>).containsKey("isChecked")
-                              ? task["isChecked"]
-                              : false),
+                      value: task["isChecked"] ?? false,
+                      onChanged: (value) => _toggleTaskCompletion(task.id, task["isChecked"] ?? false),
                       fillColor: MaterialStateProperty.all(Colors.white),
                       checkColor: Colors.pink,
                     ),
-
-
                     Expanded(
                       child: Text(
                         task["title"],
@@ -78,6 +74,7 @@ class _TodoListPageState extends State<TodoListPage> {
           );
         },
       ),
+
       floatingActionButton: FloatingActionButton(
         onPressed: () {
           Navigator.push(context, MaterialPageRoute(builder: (context) => NewTaskPage()));
