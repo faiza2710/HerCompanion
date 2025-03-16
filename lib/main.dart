@@ -53,9 +53,9 @@ class MyApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       home: Scaffold(
         // body: JobListScreen(),
-        body: SignUpPage(),
+        // body: SignUpPage(),
         // body:phone_call()
-        // body: BottomNavigationScreen(),
+        body: BottomNavigationScreen(),
         // body: SplashScreen(), // Change to NewTaskPage
       ),
     );

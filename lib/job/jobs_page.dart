@@ -36,13 +36,13 @@ class _JobListScreenState extends State<JobListScreen> {
         });
       }
     } else {
-      print("API Error: \${response.statusCode}");
+      print("API Error: ${response.statusCode}");
     }
-    print(jobs);
   }
 
   @override
   Widget build(BuildContext context) {
+    // Filter jobs based on query
     final filteredJobs = jobs
         .where((job) => job["project-title"]?.toLowerCase().contains(query) ?? false)
         .toList();
@@ -77,7 +77,7 @@ class _JobListScreenState extends State<JobListScreen> {
                 : Padding(
               padding: const EdgeInsets.all(8.0),
               child: ListView.builder(
-                itemCount: jobs.length,
+                itemCount: filteredJobs.length, // Use filtered list
                 itemBuilder: (context, index) {
                   return Card(
                     elevation: 8,
@@ -92,7 +92,7 @@ class _JobListScreenState extends State<JobListScreen> {
                         children: [
                           Expanded(
                             child: Text(
-                              jobs[index]['project-title'] ?? "No Title",
+                              filteredJobs[index]['project-title'] ?? "No Title",
                               style: TextStyle(
                                 fontWeight: FontWeight.bold,
                                 fontSize: 14,
@@ -106,12 +106,11 @@ class _JobListScreenState extends State<JobListScreen> {
                                 context,
                                 MaterialPageRoute(
                                   builder: (context) => JobDetail(
-                                    title: jobs[index]['project-title'] ?? "No Title",
-                                    description: jobs[index]['project-description'] ?? "No Description",
-                                    price: jobs[index]['project-price'] ?? "N/A",
-                                    tags: jobs[index]['project-tags'] ?? "No tags",
-                                    url:jobs[index]['project-link']??"no link",
-
+                                    title: filteredJobs[index]['project-title'] ?? "No Title",
+                                    description: filteredJobs[index]['project-description'] ?? "No Description",
+                                    price: filteredJobs[index]['project-price'] ?? "N/A",
+                                    tags: filteredJobs[index]['project-tags'] ?? "No tags",
+                                    url: filteredJobs[index]['project-link'] ?? "No link",
                                   ),
                                 ),
                               );

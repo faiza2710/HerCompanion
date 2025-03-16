@@ -46,6 +46,14 @@ class _LearningScreenState extends State<LearningScreen> {
 
   @override
   Widget build(BuildContext context) {
+    // Filtered list jo sirf matching categories dikhayegi
+    List<int> filteredIndexes = [];
+    for (int i = 0; i < categories.length; i++) {
+      if (categories[i].toLowerCase().contains(query)) {
+        filteredIndexes.add(i);
+      }
+    }
+
     return Scaffold(
       backgroundColor: Colors.white,
       body: Padding(
@@ -101,16 +109,17 @@ class _LearningScreenState extends State<LearningScreen> {
                   mainAxisSpacing: 8.0,
                   childAspectRatio: 0.8,
                 ),
-                itemCount: categories.length,
+                itemCount: filteredIndexes.length, // Filtered categories ki length
                 itemBuilder: (context, index) {
+                  int originalIndex = filteredIndexes[index]; // Original index lein
                   return GestureDetector(
                     onTap: () {
                       Navigator.push(
                         context,
                         MaterialPageRoute(
                           builder: (context) => YouTubeVideos(
-                            playlistId: playlists[index], // Pass correct playlist ID
-                            appBarTitle: categories[index], // Pass category name as title
+                            playlistId: playlists[originalIndex], // Pass correct playlist ID
+                            appBarTitle: categories[originalIndex], // Pass category name as title
                           ),
                         ),
                       );
@@ -121,7 +130,7 @@ class _LearningScreenState extends State<LearningScreen> {
                         children: [
                           // Background Image
                           Image.asset(
-                            imageList[index],
+                            imageList[originalIndex],
                             fit: BoxFit.cover,
                             width: double.infinity,
                             height: double.infinity,
@@ -146,7 +155,7 @@ class _LearningScreenState extends State<LearningScreen> {
                                   alignment: Alignment.topRight,
                                   child: CircleAvatar(
                                     backgroundColor: Colors.white,
-                                    backgroundImage: AssetImage(imageList[index]),
+                                    backgroundImage: AssetImage(imageList[originalIndex]),
                                     radius: 17,
                                   ),
                                 ),
@@ -155,7 +164,7 @@ class _LearningScreenState extends State<LearningScreen> {
 
                                 // Category Name
                                 Text(
-                                  categories[index],
+                                  categories[originalIndex],
                                   style: TextStyle(
                                     fontSize: 16,
                                     fontWeight: FontWeight.bold,
@@ -176,13 +185,12 @@ class _LearningScreenState extends State<LearningScreen> {
                                         context,
                                         MaterialPageRoute(
                                           builder: (context) => YouTubeVideos(
-                                            playlistId: playlists[index], // Pass correct playlist ID
-                                            appBarTitle: categories[index], // Pass category name as title
+                                            playlistId: playlists[originalIndex], // Pass correct playlist ID
+                                            appBarTitle: categories[originalIndex], // Pass category name as title
                                           ),
                                         ),
                                       );
                                     },
-
                                   ),
                                 ),
                               ],
@@ -201,3 +209,4 @@ class _LearningScreenState extends State<LearningScreen> {
     );
   }
 }
+
