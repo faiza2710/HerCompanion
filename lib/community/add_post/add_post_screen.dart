@@ -209,7 +209,7 @@ class AddPostScreen extends StatelessWidget {
                       ),
 
 
-                      SizedBox(height: heightX*.28,),
+                      SizedBox(height: heightX*.20,),
 
                       ActionButtonWidget(label: 'Post',
                           onTap: (){

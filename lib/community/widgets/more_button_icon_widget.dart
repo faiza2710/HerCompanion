@@ -151,7 +151,7 @@ void showDeletePostDialog({required String postId}) {
     textCancel: "Cancel",
     backgroundColor: secondaryColor,
     buttonColor: Colors.red,
-    confirmTextColor: secondaryColor,
+    confirmTextColor: Colors.black,
     cancelTextColor: pureWhite,
     onConfirm: () async {
       try {
