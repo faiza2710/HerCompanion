@@ -117,7 +117,7 @@ class _BottomNavigationScreenState extends State<BottomNavigationScreen> {
         child: _pages.elementAt(_selectedIndex),
       ),
       bottomNavigationBar: Container(
-        height: MediaQuery.of(context).size.height * 0.15, // Responsive height
+        height: MediaQuery.of(context).size.height * 0.10, // Responsive height
         color: Color.fromRGBO(36, 46, 73, 1),
         child: BottomNavigationBar(
           type: BottomNavigationBarType.fixed,
