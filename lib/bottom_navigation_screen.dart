@@ -4,8 +4,8 @@ import 'package:fyp/education/NewHomePage.dart';
 import 'package:fyp/sample.dart';
 import 'package:image_picker/image_picker.dart';
 import 'User_profile.dart';
-import 'community/community_screen.dart';
 import 'todo_screens/home.dart';
+import 'emergency_screens/EmergencyPage.dart';
 
 class BottomNavigationScreen extends StatefulWidget {
   @override
@@ -18,18 +18,22 @@ class _BottomNavigationScreenState extends State<BottomNavigationScreen> {
   static List<Widget> _pages = <Widget>[
     HomePage(),
     TodoListPage(),
-    CommunityScreen(),
+    Sample(),
     HomeServicesPage(),
+    // EmergencyPage(),
     UserProfilePage(),
   ];
 
   void _onItemTapped(int index) {
+    if (index == 2) {
+      _showModalBottomSheet(); // Show the modal bottom sheet when the "add" button is tapped
+    } else {
       setState(() {
         _selectedIndex = index;
         print('Selected Index: $_selectedIndex');
       });
+    }
   }
-
 
   void _showModalBottomSheet() {
     showModalBottomSheet(
@@ -37,53 +41,54 @@ class _BottomNavigationScreenState extends State<BottomNavigationScreen> {
       context: context,
       builder: (BuildContext context) {
         return SizedBox(
-          height: 150, child: Container(
-          padding: EdgeInsets.all(20),
-          child: Column(
-            children: [
-              SizedBox(height: 10),
-              Align(
-                alignment: Alignment.centerLeft,
-                child: Text(
-                  'Upload photo',
-                  style: TextStyle(color: Colors.white, fontSize: 15, fontWeight: FontWeight.w500),
+          height: 150,
+          child: Container(
+            padding: EdgeInsets.all(20),
+            child: Column(
+              children: [
+                SizedBox(height: 10),
+                Align(
+                  alignment: Alignment.centerLeft,
+                  child: Text(
+                    'Upload photo',
+                    style: TextStyle(color: Colors.white, fontSize: 15, fontWeight: FontWeight.w500),
+                  ),
                 ),
-              ),
-              SizedBox(height: 15),
-              InkWell(
-                onTap: () {
-                  _pickImage(ImageSource.gallery); // Open the gallery
-                },
-                child: Row(
-                  children: [
-                    Icon(
-                      Icons.photo_album_outlined,
-                      color: Colors.white,
-                    ),
-                    SizedBox(width: 20),
-                    Text('View photo library', style: TextStyle(color: Colors.white)),
-                  ],
+                SizedBox(height: 15),
+                InkWell(
+                  onTap: () {
+                    _pickImage(ImageSource.gallery); // Open the gallery
+                  },
+                  child: Row(
+                    children: [
+                      Icon(
+                        Icons.photo_album_outlined,
+                        color: Colors.white,
+                      ),
+                      SizedBox(width: 20),
+                      Text('View photo library', style: TextStyle(color: Colors.white)),
+                    ],
+                  ),
                 ),
-              ),
-              SizedBox(height: 15),
-              InkWell(
-                onTap: () {
-                  _pickImage(ImageSource.camera); // Open the camera
-                },
-                child: Row(
-                  children: [
-                    Icon(
-                      Icons.camera_alt_outlined,
-                      color: Colors.white,
-                    ),
-                    SizedBox(width: 20),
-                    Text('Take a photo', style: TextStyle(color: Colors.white)),
-                  ],
+                SizedBox(height: 15),
+                InkWell(
+                  onTap: () {
+                    _pickImage(ImageSource.camera); // Open the camera
+                  },
+                  child: Row(
+                    children: [
+                      Icon(
+                        Icons.camera_alt_outlined,
+                        color: Colors.white,
+                      ),
+                      SizedBox(width: 20),
+                      Text('Take a photo', style: TextStyle(color: Colors.white)),
+                    ],
+                  ),
                 ),
-              ),
-            ],
+              ],
+            ),
           ),
-        ),
         );
       },
     );

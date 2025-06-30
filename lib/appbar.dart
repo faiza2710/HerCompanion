@@ -24,7 +24,6 @@ class _CustomAppBarState extends State<CustomAppBar> {
   @override
   Widget build(BuildContext context) {
     return AppBar(
-      automaticallyImplyLeading: false,
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(16),
       ),
@@ -52,19 +51,19 @@ class _CustomAppBarState extends State<CustomAppBar> {
                   Stack(
                     clipBehavior: Clip.none,
                     children: [
-                      // IconButton(
-                      //   onPressed: () {
-                      //     Navigator.push(
-                      //       context,
-                      //       MaterialPageRoute(builder: (context) => EmergencyPage()),
-                      //     );
-                      //   },
-                      //   icon: Icon(
-                      //     Icons.favorite_border,
-                      //     color: Colors.white,
-                      //     size: 28,
-                      //   ),
-                      // ),
+                      IconButton(
+                        onPressed: () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(builder: (context) => EmergencyPage()),
+                          );
+                        },
+                        icon: Icon(
+                          Icons.favorite_border,
+                          color: Colors.white,
+                          size: 28,
+                        ),
+                      ),
                       // Positioned(
                       //   top: 11,
                       //   right: 12,
