@@ -224,8 +224,8 @@ class _YouTubePlayerScreenState extends State<YouTubePlayerScreen> {
       builder: (context, player) {
         return Scaffold(
           appBar: AppBar(
-            title: Text(widget.title, style: TextStyle(color: Colors.white)),
-            backgroundColor: Colors.white,
+            title: Text(widget.title, style: TextStyle(color: Colors.white,fontSize: 14)),
+            backgroundColor: Colors.pink,
             leading: IconButton(
               icon: Icon(Icons.arrow_back, color: Colors.white),
               onPressed: () {

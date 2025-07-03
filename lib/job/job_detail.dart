@@ -24,13 +24,47 @@ class _JobDetailState extends State<JobDetail> {
   bool _showFullDescription = false;
 
   void _launchURL(BuildContext context) async {
-    final Uri jobUrl = Uri.parse(widget.url);
-    if (await canLaunchUrl(jobUrl)) {
-      await launchUrl(jobUrl, mode: LaunchMode.externalApplication);
-    } else {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text("Could not open the link")),
-      );
+    bool? confirm = await showDialog<bool>(
+      context: context,
+      builder: (context) => AlertDialog(
+        backgroundColor: Colors.pinkAccent, // Secondary color
+        title: Text(
+          "Proceed to External Link",
+          style: TextStyle(color: Colors.white,fontSize: 18,fontWeight: FontWeight.w800),
+        ),
+        content: Text(
+          "You are about to leave the app to apply for this job.\n\n"
+              "All communication will happen outside the app. "
+              "We are not responsible for any issues or problems related to this job.\n\n"
+              "Do you want to continue?",
+          style: TextStyle(color: Colors.white),
+        ),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.of(context).pop(false),
+            child: Text("Cancel", style: TextStyle(color: Colors.white)),
+          ),
+          ElevatedButton(
+            style: ElevatedButton.styleFrom(
+              backgroundColor: Colors.white,
+              foregroundColor: Colors.pinkAccent,
+            ),
+            onPressed: () => Navigator.of(context).pop(true),
+            child: Text("Continue"),
+          ),
+        ],
+      ),
+    );
+
+    if (confirm == true) {
+      final Uri jobUrl = Uri.parse(widget.url);
+      if (await canLaunchUrl(jobUrl)) {
+        await launchUrl(jobUrl, mode: LaunchMode.externalApplication);
+      } else {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text("Could not open the link")),
+        );
+      }
     }
   }
 

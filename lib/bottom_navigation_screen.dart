@@ -26,17 +26,10 @@ class _BottomNavigationScreenState extends State<BottomNavigationScreen> {
   ];
 
   void _onItemTapped(int index) {
-    if (index == 2) {
-      Navigator.push(
-        context,
-        MaterialPageRoute(builder: (context) => CommunityScreen()),
-      );
-    } else {
-      setState(() {
+    setState(() {
         _selectedIndex = index;
         print('Selected Index: $_selectedIndex');
       });
-    }
   }
 
   //

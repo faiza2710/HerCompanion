@@ -70,12 +70,21 @@ class PrivacyPolicyPage extends StatelessWidget {
                     _boldTitle("Changes to the Policy"),
                     _body(
                         "We may occasionally update our Privacy Policy. Users will be notified through the app about significant changes."),
+
+                    // 🟣 Added Warning 1
+                    _boldTitle("Disclaimer for External Communication"),
+                    _body(
+                        "Any communication or interaction that occurs outside of the Her Companion app, including phone calls, job applications, or third-party messaging, is beyond the scope of our responsibility."),
+
+                    // 🟣 Added Warning 2
+                    _boldTitle("No Liability for External Services"),
+                    _body(
+                        "Her Companion will not be held liable for any issues, misunderstandings, or harm that may result from interactions initiated through but conducted outside of the application."),
                   ],
                 ),
               ),
             ),
           ),
-
         ],
       ),
     );

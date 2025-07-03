@@ -19,22 +19,55 @@ class ServiceProfilePage extends StatefulWidget {
 
 class _ServiceProfilePageState extends State<ServiceProfilePage> {
   Future<void> _makeCall() async {
-    String phoneNumber = widget.serviceContact.replaceAll(' ', '');
-
-    if (phoneNumber.startsWith('0')) {
-      phoneNumber = '+92${phoneNumber.substring(1)}';
-    }
-
-    final Uri dialNumber = Uri.parse("tel:$phoneNumber");
-
-    if (await canLaunchUrl(dialNumber)) {
-      await launchUrl(dialNumber);
-    } else {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          content: Text('Could not launch dialer. Make sure your device supports calling.'),
+    bool? confirm = await showDialog<bool>(
+      context: context,
+      builder: (context) => AlertDialog(
+        backgroundColor: Colors.pinkAccent, // Secondary color
+        title: Text(
+          "Proceed to Call",
+          style: TextStyle(color: Colors.white),
         ),
-      );
+        content: Text(
+          "You are about to make a phone call.\n\n"
+              "All communication will happen outside the app. "
+              "We are not responsible for any issues or problems related to this service.\n\n"
+              "Do you want to continue?",
+          style: TextStyle(color: Colors.white),
+        ),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.of(context).pop(false),
+            child: Text("Cancel", style: TextStyle(color: Colors.white)),
+          ),
+          ElevatedButton(
+            style: ElevatedButton.styleFrom(
+              backgroundColor: Colors.white,
+              foregroundColor: Colors.pinkAccent,
+            ),
+            onPressed: () => Navigator.of(context).pop(true),
+            child: Text("Continue"),
+          ),
+        ],
+      ),
+    );
+
+    if (confirm == true) {
+      String phoneNumber = widget.serviceContact.replaceAll(' ', '');
+      if (phoneNumber.startsWith('0')) {
+        phoneNumber = '+92${phoneNumber.substring(1)}';
+      }
+
+      final Uri dialNumber = Uri.parse("tel:$phoneNumber");
+
+      if (await canLaunchUrl(dialNumber)) {
+        await launchUrl(dialNumber);
+      } else {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text('Could not launch dialer. Make sure your device supports calling.'),
+          ),
+        );
+      }
     }
   }
 

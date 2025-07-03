@@ -1,16 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
-import 'package:fyp/todo_screens/splash.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
+import 'package:fyp/todo_screens/splash.dart';
 import 'package:get/get.dart';
 import 'package:timezone/data/latest_all.dart' as tz;
 import 'package:permission_handler/permission_handler.dart';
-import 'package:fyp/bottom_navigation_screen.dart';
+import 'package:google_fonts/google_fonts.dart';
 
-import 'Auth/SignUp.dart';
-import 'job/jobs_page.dart';
-import 'package:flutter/rendering.dart';
-import 'package:google_fonts/google_fonts.dart'; // <--- Add this
+import 'learning/main page learning.dart'; // <--- Add this
 
 Future<void> requestNotificationPermissions() async {
   var status = await Permission.notification.status;
