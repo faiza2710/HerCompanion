@@ -50,7 +50,8 @@ class _SignUpPageState extends State<SignUpPage> {
 
       // Save user info to Firestore
       await FirebaseFirestore.instance.collection('user').doc(userCredential.user!.uid).set({
-        'userId': currentUser?.uid,
+        //'userId': currentUser?.uid,
+        'userId': userCredential.user!.uid, // instead of currentUser?.uid
         'email': email,
         'password': password, // ⚠️ Storing plain text passwords is NOT recommended
       });

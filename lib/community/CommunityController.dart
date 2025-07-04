@@ -102,7 +102,7 @@ class CommunityController extends GetxController {
 
     if (!userDoc.exists) {
       print('❌ User document does not exist for ID: $currentUserId');
-      Get.snackbar("User Not Found", "Your user profile is missing in the database.");
+      Get.snackbar("Your profile not updated", "So you can't comment on post");
       return;
     }
 
