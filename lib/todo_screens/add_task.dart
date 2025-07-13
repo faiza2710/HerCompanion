@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:permission_handler/permission_handler.dart';
-// import 'package:fyp/components/notice.dart';
 import 'dart:math';
 import 'package:firebase_auth/firebase_auth.dart';
 
@@ -26,7 +25,38 @@ class _NewTaskPageState extends State<NewTaskPage> {
     User? currentUser = FirebaseAuth.instance.currentUser;
     if (currentUser == null) return;
 
-    if (taskTitle.isNotEmpty && taskmesg.isNotEmpty) {
+    if (taskTitle.isEmpty || taskmesg.isEmpty || selectedDate == "Date not set" || selectedTime == "Time not set") {
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+        content: Text("Please fill in all fields including date and time."),
+        backgroundColor: Colors.red,
+      ));
+      return;
+    }
+
+    try {
+      // Parse time
+      List<String> timeParts = selectedTime.split(":");
+      int hour = int.parse(timeParts[0]);
+      int minute = int.parse(timeParts[1]);
+
+      // Parse date
+      List<String> dateParts = selectedDate.split("-");
+      int year = int.parse(dateParts[0]);
+      int month = int.parse(dateParts[1]);
+      int day = int.parse(dateParts[2]);
+
+      DateTime selectedDateTime = DateTime(year, month, day, hour, minute);
+      DateTime now = DateTime.now();
+
+      if (selectedDateTime.isBefore(now)) {
+        ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+          content: Text("Please select a future date and time."),
+          backgroundColor: Colors.red,
+        ));
+        return;
+      }
+
+      // Proceed with saving
       tasksCollection.add({
         "title": taskTitle,
         "message": taskmesg,
@@ -34,17 +64,15 @@ class _NewTaskPageState extends State<NewTaskPage> {
         "userId": currentUser.uid,
       }).then((value) => Navigator.pop(context));
 
-      List<String> timeParts = selectedTime.split(":");
-      int hour = int.parse(timeParts[0]);
-      int minute = int.parse(timeParts[1]);
-      List<String> dateParts = selectedDate.split("-");
-      int year = int.parse(dateParts[0]);
-      int month = int.parse(dateParts[1]);
-      int day = int.parse(dateParts[2]);
       _requestPermissions();
+
       int uniqueId = Random().nextInt(100000);
-      DateTime selectedDateTime = DateTime(year, month, day, hour, minute);
       NotificationHelper().ScheduleNotification(uniqueId, taskTitle, taskmesg, selectedDateTime);
+    } catch (e) {
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+        content: Text("Invalid date or time format."),
+        backgroundColor: Colors.red,
+      ));
     }
   }
 
@@ -155,7 +183,7 @@ class _NewTaskPageState extends State<NewTaskPage> {
                             DateTime? pickedDate = await showDatePicker(
                               context: context,
                               initialDate: DateTime.now(),
-                              firstDate: DateTime(2000),
+                              firstDate: DateTime.now(), // no past date
                               lastDate: DateTime(2100),
                             );
                             if (pickedDate != null) {

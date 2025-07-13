@@ -4,7 +4,7 @@ import 'package:fyp/todo_screens/add_task.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
 User? currentUser = FirebaseAuth.instance.currentUser;
-String? userId = currentUser?.uid; // Logged-in user's UID
+String? userId = currentUser?.uid;
 
 class TodoListPage extends StatefulWidget {
   @override
@@ -30,8 +30,20 @@ class _TodoListPageState extends State<TodoListPage> {
       body: StreamBuilder(
         stream: tasksCollection.where("userId", isEqualTo: FirebaseAuth.instance.currentUser?.uid).snapshots(),
         builder: (context, AsyncSnapshot<QuerySnapshot> snapshot) {
-          if (!snapshot.hasData) {
-            return Center(child: Text("No tasks available"));
+          if (!snapshot.hasData || snapshot.data!.docs.isEmpty) {
+            return Center(
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Icon(Icons.hourglass_empty, color: Colors.pink, size: 60),
+                  SizedBox(height: 10),
+                  Text(
+                    "No tasks added yet!",
+                    style: TextStyle(fontSize: 18, color: Colors.pink.shade600),
+                  ),
+                ],
+              ),
+            );
           }
 
           var tasks = snapshot.data!.docs;
@@ -83,7 +95,6 @@ class _TodoListPageState extends State<TodoListPage> {
       ),
     );
   }
-
 }
 
 class CustomAppBar extends StatefulWidget implements PreferredSizeWidget {
@@ -107,7 +118,6 @@ class _CustomAppBarState extends State<CustomAppBar> {
       backgroundColor: Colors.pink,
       flexibleSpace: Stack(
         children: [
-          // Logo and title on the left
           Align(
             alignment: Alignment.bottomLeft,
             child: Padding(
@@ -118,41 +128,16 @@ class _CustomAppBarState extends State<CustomAppBar> {
                   Text(
                     'To Do List',
                     style: TextStyle(
-                      fontFamily: 'CustomFont', // The font family name as defined in pubspec.yaml
+                      fontFamily: 'CustomFont',
                       color: Colors.white,
-                      fontSize: 30, // Slightly larger font size for cursive styling
-                      fontWeight: FontWeight.w500, // Adjust weight if needed
+                      fontSize: 30,
+                      fontWeight: FontWeight.w500,
                     ),
                   ),
-                  // Favorite Icon with Red Dot
                   Stack(
                     clipBehavior: Clip.none,
                     children: [
-                      // IconButton(
-                      //   onPressed: () {
-                      //     Navigator.push(
-                      //       context,
-                      //       MaterialPageRoute(builder: (context) => EmergencyPage()),
-                      //     );
-                      //   },
-                      //   icon: Icon(
-                      //     Icons.favorite_border,
-                      //     color: Colors.white,
-                      //     size: 28,
-                      //   ),
-                      // ),
-                      // Positioned(
-                      //   top: 11,
-                      //   right: 12,
-                      //   child: Container(
-                      //     width: 10,
-                      //     height: 10,
-                      //     decoration: BoxDecoration(
-                      //       color: Colors.white,
-                      //       shape: BoxShape.circle,
-                      //     ),
-                      //   ),
-                      // ),
+                      // Icon placeholder (optional)
                     ],
                   ),
                 ],
@@ -164,4 +149,3 @@ class _CustomAppBarState extends State<CustomAppBar> {
     );
   }
 }
-

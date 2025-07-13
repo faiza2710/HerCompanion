@@ -15,24 +15,38 @@ class _PostingServiceState extends State<PostingService> {
   final TextEditingController mobileController = TextEditingController();
   final FirebaseService firebaseService = FirebaseService();
 
+  final RegExp onlyDigits = RegExp(r'^\d+$');
+  final RegExp containsLetters = RegExp(r'[a-zA-Z]');
+
   void saveService() async {
     String title = titleController.text.trim();
     String description = descriptionController.text.trim();
     String mobile = mobileController.text.trim();
 
-    final RegExp mobileRegExp = RegExp(r'^\d{4} \d+$');
+    final RegExp mobileRegExp = RegExp(r'^\d{4} \d{7,}$');
 
     if (title.isEmpty || description.isEmpty || mobile.isEmpty) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('Please fill in all fields')),
-      );
+      showError("All fields are required.");
+      return;
+    }
+
+    if (!containsLetters.hasMatch(title) ||
+        onlyDigits.hasMatch(title) ||
+        isGibberish(title)) {
+      showError("Enter a meaningful service title.");
+      return;
+    }
+
+    if (description.length < 10 ||
+        !containsLetters.hasMatch(description) ||
+        onlyDigits.hasMatch(description) ||
+        isGibberish(description)) {
+      showError("Enter a valid service description.");
       return;
     }
 
     if (!mobileRegExp.hasMatch(mobile)) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('Please enter a valid mobile number (First 4 digits then space)')),
-      );
+      showError("Enter a valid mobile number (e.g., 0300 1234567).");
       return;
     }
 
@@ -43,17 +57,44 @@ class _PostingServiceState extends State<PostingService> {
       );
       Navigator.pop(context);
     } catch (e) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('Failed to save service. Please try again.')),
-      );
+      showError("Failed to save service. Please try again.");
     }
+  }
+
+  void showError(String message) {
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(content: Text(message), backgroundColor: Colors.red),
+    );
+  }
+
+  bool isGibberish(String text) {
+    if (text.isEmpty) return true;
+
+    final repeatedChars = RegExp(r'(.)\1{4,}');
+    final excessiveDigits = RegExp(r'\d{6,}');
+    final longSingleWord = RegExp(r'\b\w{20,}\b');
+    final symbolHeavy = RegExp(r'[^a-zA-Z0-9\s]{4,}');
+
+    final words = text.trim().split(RegExp(r'\s+'));
+    int validWordCount = words
+        .where((word) =>
+    word.length > 2 &&
+        RegExp(r'[a-zA-Z]').hasMatch(word) &&
+        !onlyDigits.hasMatch(word))
+        .length;
+
+    return validWordCount < 2 ||
+        repeatedChars.hasMatch(text) ||
+        excessiveDigits.hasMatch(text) ||
+        longSingleWord.hasMatch(text) ||
+        symbolHeavy.hasMatch(text);
   }
 
   Widget _buildShadowCard(String label, Widget field) {
     return Card(
       elevation: 4,
       shadowColor: Colors.black,
-      color: Colors.white, // very light pink
+      color: Colors.white,
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
       margin: EdgeInsets.only(bottom: 20),
       child: Padding(
@@ -74,7 +115,7 @@ class _PostingServiceState extends State<PostingService> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.white, // White scaffold
+      backgroundColor: Colors.white,
       appBar: AppBar(
         title: Text('Provide Details', style: TextStyle(color: Colors.white)),
         backgroundColor: Colors.pinkAccent,
@@ -91,7 +132,6 @@ class _PostingServiceState extends State<PostingService> {
               'Service Title',
               TextField(
                 controller: titleController,
-                maxLength: 30,
                 decoration: InputDecoration(
                   hintText: 'e.g., Home Tuitions, Tailoring',
                   border: OutlineInputBorder(),
@@ -127,7 +167,7 @@ class _PostingServiceState extends State<PostingService> {
               TextField(
                 controller: mobileController,
                 keyboardType: TextInputType.phone,
-                maxLength: 16,
+                maxLength: 15,
                 inputFormatters: [
                   FilteringTextInputFormatter.digitsOnly,
                   TextInputFormatter.withFunction((oldValue, newValue) {
@@ -180,7 +220,6 @@ class _PostingServiceState extends State<PostingService> {
                 ),
               ),
             ),
-
           ],
         ),
       ),
